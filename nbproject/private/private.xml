@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/Expression.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/ReturnStatement.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/ArithmeticExpression.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/CMinusScanner/Scanner.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/Factor.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/ArrayExpression.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/Statement.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/Param.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/IfStatement.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/CMinusScanner/Token.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/compiler/Compiler.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/FunctionDeclaration.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/BinaryExpr.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/CMinusScanner/CMinusScanner.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/Program.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/WhileStatement.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/ParserException.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/Declaration.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/CompoundStatement.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/AssignExpr.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/ExpressionStatement.java</file>
+            <file>file:/A:/Documents/Projects/Compiler/src/Parser/VariableDeclaration.java</file>
+        </group>
+    </open-files>
+</project-private>
