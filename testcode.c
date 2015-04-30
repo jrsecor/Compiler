@@ -5,8 +5,8 @@ int addThem(int d, int e) {
   int f;
   f = d + e;
 
-  /*return f;*/
-}/*
+  return f;
+}
 
 void putDigit(int s) {
    putchar(48+s);
@@ -19,12 +19,16 @@ void printInt(int r) {
   found = 0;
 
   if (r >= 10000) {
-      /* print -1) *//*
+      /* print -1) */
     putchar(45);
     putDigit(1);
     return;
   }
   else {
+	  t = 1;
+  }
+  putchar(t);
+
     if (r >= 1000) {
        t = r / 1000;
        putDigit(t);
@@ -53,9 +57,7 @@ void printInt(int r) {
 
     putDigit(r);
   }
-
-}
-
+  
 int main (void) {
 
   int b;
@@ -140,4 +142,4 @@ int main (void) {
   putchar(10);
 
   return 0;
-}*/
+}

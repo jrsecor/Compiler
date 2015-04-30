@@ -58,7 +58,52 @@ public class WhileStatement extends Statement {
 
     @Override
     public void genLLCode(Function f) {
-        
+        BasicBlock b = f.getCurrBlock();
+        try {
+            //1 Gencode
+            Operand binExp = expr.genLLCode(f);
+            
+            //2 Make BasicBlock
+            BasicBlock loopBlock = new BasicBlock(f);
+            BasicBlock postBlock = new BasicBlock(f);
+            //3 Make Branch
+            Operation branch = new Operation(Operation.OperationType.BEQ, b);
+            branch.setSrcOperand(0, binExp);
+            Operand src1 = new Operand(Operand.OperandType.INTEGER, 0);
+            branch.setSrcOperand(1, src1);
+            Operand src2;
+            src2 = new Operand(Operand.OperandType.BLOCK, 
+                    postBlock.getBlockNum());            
+            branch.setSrcOperand(2, src2);
+            b.appendOper(branch);
+            
+            //4 Append Loop Block
+            f.appendBlock(loopBlock);
+            
+            //5 CurrentBlock is loop block
+            f.setCurrBlock(loopBlock);
+            
+            //6 Gencode Loop
+            stmt.genLLCode(f);
+            
+            //7 Make Branch
+            branch = new Operation(Operation.OperationType.BNE, b);
+            branch.setSrcOperand(0, binExp);
+            src1 = new Operand(Operand.OperandType.INTEGER, 0);
+            branch.setSrcOperand(1, src1);
+            src2 = new Operand(Operand.OperandType.BLOCK, 
+                    loopBlock.getBlockNum());            
+            branch.setSrcOperand(2, src2);
+            b.appendOper(branch);
+            
+            //8 append post
+            f.appendBlock(postBlock);
+            
+            //9 CurrentBlock = post
+            f.setCurrBlock(postBlock);
+        } catch (CodeGenerationException ex) {
+            System.err.println("Error in WhileStatement::genLLCode()");
+        }        
     }
     
 }

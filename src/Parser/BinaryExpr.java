@@ -98,18 +98,10 @@ public class BinaryExpr extends Expression{
         op.setSrcOperand(1, src2);
         Operand dest = new Operand(Operand.OperandType.REGISTER,
                 b.getFunc().getNewRegNum());
-        op.setDestOperand(0, src2);
+        op.setDestOperand(0, dest);
         
         //Set pointers
-        op.setPrevOper(b.getLastOper());
-        if(b.getLastOper() == null){
-            b.setFirstOper(op);
-            b.setLastOper(op);
-        }
-        else{
-            b.getLastOper().setNextOper(op);
-            b.appendOper(op);
-        }  
+        b.appendOper(op); 
         return dest;
     }
 }

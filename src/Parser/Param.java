@@ -2,6 +2,7 @@ package Parser;
 import CMinusScanner.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import lowlevel.*;
 /**
  *
  * @author Abraham Church and Jacob Secor
@@ -47,4 +48,8 @@ public class Param {
         write.append(s + id + "\r\n");
     }
     
+    public FuncParam genLLCode(Function f){
+        f.getTable().put(id, f.getNewRegNum());
+        return new FuncParam(Data.TYPE_INT, id);
+    }
 }

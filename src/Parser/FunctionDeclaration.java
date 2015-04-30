@@ -77,17 +77,37 @@ public class FunctionDeclaration extends Declaration{
         //f will always be null....
         int type = returnType.equals("int") ? Data.TYPE_INT : Data.TYPE_VOID;
         Function toReturn = new Function(type, name);
-        toReturn.createBlock0();
+        FuncParam firstParam = null;
+        FuncParam nextParam1 = null;
+        FuncParam nextParam2;
+        for(int i = 0; i < params.size(); i++){
+            if(i == 0){
+                firstParam = params.get(i).genLLCode(toReturn);
+                nextParam1 = firstParam;
+            }
+            else{
+                nextParam2 = params.get(i).genLLCode(toReturn);
+                nextParam1.setNextParam(nextParam2);
+            }
+        }
+        toReturn.setFirstParam(firstParam);        
         // 3) Make Basic Block 0
         toReturn.createBlock0();
         // 4) make basic block (block 0 is sentinal)
         BasicBlock b = new BasicBlock(toReturn);
-        toReturn.getFirstBlock().setNextBlock(b);
-        b.setPrevBlock(toReturn.getFirstBlock());
+        toReturn.appendBlock(b);
         toReturn.setCurrBlock(b);
-        //GenCode CompoundStatement?
-       cmpdStmt.genLLCode(toReturn);
-       b.appendOper(new Operation(Operation.OperationType.FUNC_EXIT, b));
+        
+        //GenCode CompoundStatement
+        cmpdStmt.genLLCode(toReturn);
+        
+        //Append Return Block
+        toReturn.appendBlock(toReturn.getReturnBlock());
+        
+        //Append unconnected chain
+        if(toReturn.getFirstUnconnectedBlock() != null){
+            toReturn.appendBlock(toReturn.getFirstUnconnectedBlock());
+        }
         return toReturn;
     }
 }

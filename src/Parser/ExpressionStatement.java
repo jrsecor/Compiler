@@ -3,6 +3,8 @@ package Parser;
 import CMinusScanner.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lowlevel.Function;
 
 /**
@@ -46,7 +48,11 @@ public class ExpressionStatement extends Statement{
 
     @Override
     public void genLLCode(Function f) {
-        expr.genLLCode(f);
+        try {
+            expr.genLLCode(f);
+        } catch (CodeGenerationException ex) {
+            System.err.println("Error in ExpressionStatement::genLLCode()");
+        }
     }
     
 }

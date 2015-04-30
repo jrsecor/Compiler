@@ -51,15 +51,7 @@ public class AssignExpr extends Expression{
         op.setDestOperand(0, dest);
         
         //Set pointers
-        op.setPrevOper(b.getLastOper());
-        if(b.getLastOper() == null){
-            b.setFirstOper(op);
-            b.setLastOper(op);
-        }
-        else{
-            b.getLastOper().setNextOper(op);
-            b.appendOper(op);
-        }  
+        b.appendOper(op);
         return dest;
     }
     

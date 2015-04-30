@@ -71,7 +71,24 @@ public class Factor extends Expression{
         BasicBlock b = f.getCurrBlock();
         Operand toReturn;
         if(isCall){//Call
-           toReturn = null;
+            //Args
+            for(int i = 0; i < args.size(); i++){
+                Operation op = new Operation(Operation.OperationType.PASS, b);
+                Operand src = args.get(i).genLLCode(f);
+                op.setSrcOperand(0, src);
+                Attribute att = new Attribute("PARAM_NUM",
+                        Integer.toString(i + 1));
+                op.addAttribute(att);
+                b.appendOper(op);
+            }
+            
+            toReturn = new Operand(Operand.OperandType.STRING, data);
+            Operation op = new Operation(Operation.OperationType.CALL, b);
+            op.setSrcOperand(0, toReturn);
+            Attribute att1 = new Attribute("numParams",
+                    Integer.toString(args.size()));
+            op.addAttribute(att1);
+            b.appendOper(op);
         }
         else if(data.matches("(0|1|2|3|4|5|6|7|8|9)+")){//NUM
             toReturn = new Operand(Operand.OperandType.INTEGER, 

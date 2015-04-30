@@ -50,10 +50,23 @@ public class ReturnStatement extends Statement{
 
     @Override
     public void genLLCode(Function f) {
+        BasicBlock b = f.getCurrBlock();        
         try {
-            Operand dest = expr.genLLCode(f);
-        } catch (CodeGenerationException ex) {
-            System.err.println("njrngfjnfjk");
+            if(expr != null){
+                Operand src = expr.genLLCode(f);
+                Operand dest = new Operand(Operand.OperandType.MACRO, "RetReg");
+                Operation op = new Operation(Operation.OperationType.ASSIGN, b);
+                op.setDestOperand(0, dest);
+                op.setSrcOperand(0, src);
+                b.appendOper(op);
+            }
+            Operation op = new Operation(Operation.OperationType.JMP, b);
+            Operand src = new Operand(Operand.OperandType.BLOCK, 
+                        f.getReturnBlock().getBlockNum());
+            op.setSrcOperand(0, src);
+            b.appendOper(op);
+        } catch (Exception ex) {
+            System.err.println("error in ReturnStatement::genLLCode()");
         }
         
     }
