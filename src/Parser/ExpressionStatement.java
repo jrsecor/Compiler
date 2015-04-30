@@ -3,6 +3,7 @@ package Parser;
 import CMinusScanner.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import lowlevel.Function;
 
 /**
  *
@@ -41,6 +42,11 @@ public class ExpressionStatement extends Statement{
         if(expr != null){
             expr.print(indent + 1, write);
         }
+    }
+
+    @Override
+    public void genLLCode(Function f) {
+        expr.genLLCode(f);
     }
     
 }

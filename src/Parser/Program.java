@@ -4,6 +4,7 @@ import CMinusScanner.Token;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import lowlevel.*;
 /**
  *
  * @author Abraham Church and Jacob Secor
@@ -33,7 +34,8 @@ public class Program {
                     temp = new FunctionDeclaration();
                 }
                 else if(t.getType() == Token.TokenType.SEMI_TOKEN ||
-                                    t.getType() == Token.TokenType.LBRAK_TOKEN){
+                                t.getType() == Token.TokenType.LBRAK_TOKEN ||
+                                t.getType() == Token.TokenType.EOF_TOKEN){
                     temp = new VariableDeclaration();
                 }
                 else{
@@ -52,5 +54,16 @@ public class Program {
         for (int i = 0; i < decls.size(); i++){
             decls.get(i).print(indent + 1, write);
         }
+    }
+    
+    public CodeItem genLLCode(){
+        CodeItem first = decls.get(0).genLLCode(null);
+        CodeItem current = first;
+        for (int i = 1; i < decls.size(); i++){
+            CodeItem temp = decls.get(i).genLLCode(null);
+            current.setNextItem(temp);
+            current = temp;
+        }
+        return first;
     }
 }

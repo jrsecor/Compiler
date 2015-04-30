@@ -1,11 +1,12 @@
 int a;
+int b;
 
 int addThem(int d, int e) {
   int f;
   f = d + e;
 
-  return f;
-}
+  /*return f;*/
+}/*
 
 void putDigit(int s) {
    putchar(48+s);
@@ -18,7 +19,7 @@ void printInt(int r) {
   found = 0;
 
   if (r >= 10000) {
-      /* print -1) */
+      /* print -1) *//*
     putchar(45);
     putDigit(1);
     return;
@@ -139,4 +140,4 @@ int main (void) {
   putchar(10);
 
   return 0;
-}
+}*/

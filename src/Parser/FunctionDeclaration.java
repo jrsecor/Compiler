@@ -4,6 +4,7 @@ import CMinusScanner.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import lowlevel.*;
 
 /**
  *
@@ -71,4 +72,22 @@ public class FunctionDeclaration extends Declaration{
         cmpdStmt.print(indent + 1, write);
     }
     
+    @Override
+    public CodeItem genLLCode(Function f){
+        //f will always be null....
+        int type = returnType.equals("int") ? Data.TYPE_INT : Data.TYPE_VOID;
+        Function toReturn = new Function(type, name);
+        toReturn.createBlock0();
+        // 3) Make Basic Block 0
+        toReturn.createBlock0();
+        // 4) make basic block (block 0 is sentinal)
+        BasicBlock b = new BasicBlock(toReturn);
+        toReturn.getFirstBlock().setNextBlock(b);
+        b.setPrevBlock(toReturn.getFirstBlock());
+        toReturn.setCurrBlock(b);
+        //GenCode CompoundStatement?
+       cmpdStmt.genLLCode(toReturn);
+       b.appendOper(new Operation(Operation.OperationType.FUNC_EXIT, b));
+        return toReturn;
+    }
 }

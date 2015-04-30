@@ -3,6 +3,7 @@ package Parser;
 import CMinusScanner.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import lowlevel.*;
 
 /**
  *
@@ -10,7 +11,10 @@ import java.io.IOException;
  */
 public abstract class Declaration {
     
-    public abstract Declaration parseDeclaration(Token t) throws ParserException;
-    public abstract void print(int indent, BufferedWriter write) throws IOException;
+    public abstract Declaration parseDeclaration(Token t) throws 
+                                                            ParserException;
+    public abstract void print(int indent, BufferedWriter write) throws 
+                                                                IOException;
+    public abstract CodeItem genLLCode(Function f);
     
 }

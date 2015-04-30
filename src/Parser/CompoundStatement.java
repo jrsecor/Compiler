@@ -4,6 +4,7 @@ import CMinusScanner.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.*;
+import lowlevel.*;
 
 /**
  *
@@ -76,5 +77,13 @@ public class CompoundStatement extends Statement {
             stmts.get(i).print(indent + 1, write);
         }
     }
-    
+    public void genLLCode(Function f){
+        for(int i = 0; i < varDecls.size(); i++){
+            varDecls.get(i).genLLCode(f);
+        }
+        for(int i = 0; i < stmts.size(); i++){
+            stmts.get(i).genLLCode(f);
+        }
+        
+    }
 }

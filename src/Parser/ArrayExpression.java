@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import CMinusScanner.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import lowlevel.*;
 
 /**
  *
@@ -45,6 +46,12 @@ public class ArrayExpression extends Expression{
         s += "\t";
         write.append(s + id + "\r\n");
         index.print(indent + 1, write);
+    }
+
+    @Override
+    public Operand genLLCode(Function f) throws CodeGenerationException {
+        throw new CodeGenerationException(
+                "We currently do not support arrays.");
     }
     
 }

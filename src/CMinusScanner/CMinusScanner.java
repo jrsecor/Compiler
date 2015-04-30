@@ -175,6 +175,9 @@ public class CMinusScanner implements Scanner{
                             else if(isWhitespace(c)){
                                 s = state.START;
                             }
+                            else if(!inFile.ready()){
+                                return new Token(Token.TokenType.EOF_TOKEN);
+                            }
                             else{
                                 s = state.ERROR;
                             }

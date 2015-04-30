@@ -3,7 +3,7 @@ package Parser;
 import CMinusScanner.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
-
+import lowlevel.*;
 /**
  *
  * @author Abraham Church and Jacob Secor
@@ -50,6 +50,20 @@ public class VariableDeclaration extends Declaration{
         }
         else{
             write.append(s + id + "\r\n");
+        }
+    }
+    
+    @Override
+    public CodeItem genLLCode(Function f){
+        if(f == null){//global variable
+            compiler.Compiler.globalHash.put(id, compiler.Compiler.globalHash.size() + 1);
+            Data d = new Data(Data.TYPE_INT, id, size != 0, size);
+            return d;
+        }
+        else{
+            f.getTable().put(id, f.getNewRegNum());
+            Data d = new Data(Data.TYPE_INT, id, size != 0, size);
+            return d;
         }
     }
     

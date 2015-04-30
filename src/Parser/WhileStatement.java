@@ -2,6 +2,7 @@ package Parser;
 import CMinusScanner.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import lowlevel.*;
 /**
  *
  * @author Abraham Church and Jacob Secor
@@ -53,6 +54,11 @@ public class WhileStatement extends Statement {
         write.append(s + "WhileStatement\r\n");
         expr.print(indent + 1, write);
         stmt.print(indent + 1, write);
+    }
+
+    @Override
+    public void genLLCode(Function f) {
+        
     }
     
 }

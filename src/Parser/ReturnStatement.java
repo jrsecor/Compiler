@@ -2,6 +2,9 @@ package Parser;
 import CMinusScanner.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import lowlevel.*;
 /**
  *
  * @author Abraham Church and Jacob Secor
@@ -43,6 +46,16 @@ public class ReturnStatement extends Statement{
         if(expr != null){
             expr.print(indent + 1, write);
         }
+    }
+
+    @Override
+    public void genLLCode(Function f) {
+        try {
+            Operand dest = expr.genLLCode(f);
+        } catch (CodeGenerationException ex) {
+            System.err.println("njrngfjnfjk");
+        }
+        
     }
     
 }

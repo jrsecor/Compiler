@@ -4,6 +4,7 @@ import CMinusScanner.*;
 import com.sun.javafx.fxml.expression.BinaryExpression;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import lowlevel.*;
 
 /**
  *
@@ -13,6 +14,7 @@ public abstract class Expression {
     Expression exp;
     public abstract Expression parseExpression(Token t) throws ParserException;
     public abstract void print(int indent, BufferedWriter write) throws IOException;
+    public abstract Operand genLLCode(Function f) throws CodeGenerationException; 
     
     public Expression(){
         exp = null;

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import CMinusScanner.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import lowlevel.*;
 
 /**
  *
@@ -63,4 +64,52 @@ public class BinaryExpr extends Expression{
         lhs.print(indent + 2, write);
         rhs.print(indent + 2, write);        
     }    
+
+    @Override
+    public Operand genLLCode(Function f) throws CodeGenerationException {
+        BasicBlock b = f.getCurrBlock();
+        Operation op;
+        //Source 1
+        Operand src1 = lhs.genLLCode(f);
+        Operand src2 = rhs.genLLCode(f);
+        switch(opType){
+            case "<":
+                op = new Operation(Operation.OperationType.LT, b);
+                break;
+            case "<=":
+                op = new Operation(Operation.OperationType.LTE, b);
+                break;
+            case ">":
+                op = new Operation(Operation.OperationType.GT, b);
+                break;
+            case ">=":
+                op = new Operation(Operation.OperationType.GTE, b);
+                break;
+            case "==":
+                op = new Operation(Operation.OperationType.EQUAL, b);
+                break;
+            case "!=":
+                op = new Operation(Operation.OperationType.NOT_EQUAL, b);
+                break;
+            default:
+                throw new CodeGenerationException("Error in Arithmetic Gen Code");
+        }
+        op.setSrcOperand(0, src1);
+        op.setSrcOperand(1, src2);
+        Operand dest = new Operand(Operand.OperandType.REGISTER,
+                b.getFunc().getNewRegNum());
+        op.setDestOperand(0, src2);
+        
+        //Set pointers
+        op.setPrevOper(b.getLastOper());
+        if(b.getLastOper() == null){
+            b.setFirstOper(op);
+            b.setLastOper(op);
+        }
+        else{
+            b.getLastOper().setNextOper(op);
+            b.appendOper(op);
+        }  
+        return dest;
+    }
 }

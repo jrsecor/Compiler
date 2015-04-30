@@ -3,6 +3,7 @@ import CMinusScanner.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import lowlevel.*;
 /**
  *
  * @author Abraham Church and Jacob Secor
@@ -63,6 +64,29 @@ public class Factor extends Expression{
         else{
             write.append("\r\n");
         }
+    }
+
+    @Override
+    public Operand genLLCode(Function f) throws CodeGenerationException {
+        BasicBlock b = f.getCurrBlock();
+        Operand toReturn;
+        if(isCall){//Call
+           toReturn = null;
+        }
+        else if(data.matches("(0|1|2|3|4|5|6|7|8|9)+")){//NUM
+            toReturn = new Operand(Operand.OperandType.INTEGER, 
+                    Integer.parseInt(data));
+        }
+        else{//local or global ID
+           if(f.getTable().containsKey(data)){//local
+                toReturn = new Operand(Operand.OperandType.REGISTER,
+                f.getTable().get(data));
+            }
+            else{//global
+                toReturn = new Operand(Operand.OperandType.STRING, data);
+            }
+        }
+        return toReturn;
     }
     
 }
