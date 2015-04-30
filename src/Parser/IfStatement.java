@@ -21,14 +21,16 @@ public class IfStatement extends Statement {
     public Statement parseStatement(Token t) throws ParserException {
         t = compiler.Compiler.scanner.getNextToken();
         if(t.getType() != Token.TokenType.LPAREN_TOKEN){
-            throw new ParserException("Error in parseStatement(IF) : Unexpected Token: " + t.getType().toString());
+            throw new ParserException("Error in parseStatement(IF) :"
+                    + " Unexpected Token: " + t.getType().toString());
         }
         t = compiler.Compiler.scanner.getNextToken();
-        expr = new ArithmeticExpression();//the next line should change what type of expression it is if neccessary
+        expr = new ArithmeticExpression();
         expr = expr.getNextExpression(t);
         t = compiler.Compiler.scanner.getNextToken();
         if(t.getType() != Token.TokenType.RPAREN_TOKEN){
-            throw new ParserException("Error in parseStatement(IF) : Unexpected Token: " + t.getType().toString());
+            throw new ParserException("Error in parseStatement(IF) :"
+                    + " Unexpected Token: " + t.getType().toString());
         }
         t = compiler.Compiler.scanner.getNextToken();
         if(t.getType() == Token.TokenType.RETURN_TOKEN){
@@ -116,7 +118,7 @@ public class IfStatement extends Statement {
             b.appendOper(branch);
             
             //4 Append Then Block
-            f.appendBlock(thenBlock);
+            f.appendToCurrentBlock(thenBlock);
             
             //5 CurrentBlock is then block
             f.setCurrBlock(thenBlock);
@@ -125,7 +127,7 @@ public class IfStatement extends Statement {
             thenPt.genLLCode(f);
             
             //7 append post
-            f.appendBlock(postBlock);
+            f.appendToCurrentBlock(postBlock);
             if(elsePt != null){
                 //8 CurrentBlock = else
                 f.setCurrBlock(elseBlock);
@@ -135,11 +137,11 @@ public class IfStatement extends Statement {
                 
                 //10 JMP Post
                 Operation jump = new Operation(Operation.OperationType.JMP,
-                    elseBlock);
+                    f.getCurrBlock());
                 Operand src = new Operand(Operand.OperandType.BLOCK,
                         postBlock.getBlockNum());
                 jump.setSrcOperand(0, src);
-                elseBlock.appendOper(jump);
+                f.getCurrBlock().appendOper(jump);
                 
                 //11 Append unconnected?
                 f.appendUnconnectedBlock(elseBlock);

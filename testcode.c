@@ -1,5 +1,4 @@
 int a;
-int b;
 
 int addThem(int d, int e) {
   int f;
@@ -25,10 +24,6 @@ void printInt(int r) {
     return;
   }
   else {
-	  t = 1;
-  }
-  putchar(t);
-
     if (r >= 1000) {
        t = r / 1000;
        putDigit(t);
@@ -57,7 +52,9 @@ void printInt(int r) {
 
     putDigit(r);
   }
-  
+
+}
+
 int main (void) {
 
   int b;

@@ -17,19 +17,21 @@ public class ExpressionStatement extends Statement{
     
     @Override
     public Statement parseStatement(Token t) throws ParserException {
-        if(t.getType() == Token.TokenType.SEMI_TOKEN || t.getType() == Token.TokenType.EOF_TOKEN){
+        if(t.getType() == Token.TokenType.SEMI_TOKEN || 
+                t.getType() == Token.TokenType.EOF_TOKEN){
             expr = null;
         }
         else if(t.getType() == Token.TokenType.LPAREN_TOKEN ||
                     t.getType() == Token.TokenType.NUM_TOKEN ||
                     t.getType() == Token.TokenType.ID_TOKEN){
             
-            expr = new ArithmeticExpression();//the next line should change what type of expression it is if neccessary
+            expr = new ArithmeticExpression();
             expr = expr.getNextExpression(t);
             t = compiler.Compiler.scanner.getNextToken();
         }
         else{
-            throw new ParserException("Error in parseStatement(ExpressionStmt) : Unexpected Token: " + t.getType().toString());
+            throw new ParserException("Error in parseStatement(ExpressionStmt)"
+                    + " : Unexpected Token: " + t.getType().toString());
         }
         return this;
     }

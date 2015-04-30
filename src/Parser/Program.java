@@ -39,7 +39,8 @@ public class Program {
                     temp = new VariableDeclaration();
                 }
                 else{
-                    throw new ParserException("Error in Parse Program: unexpected token: " + t.getType().toString());
+                    throw new ParserException("Error in Parse Program:"
+                            + " unexpected token: " + t.getType().toString());
                 }
             }
             Declaration d = temp.parseDeclaration(munched);

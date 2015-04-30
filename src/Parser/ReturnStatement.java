@@ -22,15 +22,17 @@ public class ReturnStatement extends Statement{
         else if(t.getType() == Token.TokenType.LPAREN_TOKEN ||
                     t.getType() == Token.TokenType.NUM_TOKEN ||
                     t.getType() == Token.TokenType.ID_TOKEN){
-            expr = new ArithmeticExpression();//the next line should change what type of expression it is if neccessary
+            expr = new ArithmeticExpression();
             expr = expr.getNextExpression(t);
             t = compiler.Compiler.scanner.getNextToken();
             if(t.getType() != Token.TokenType.SEMI_TOKEN){
-                throw new ParserException("Error in parseStatement(Return) : Unexpected Token: " + t.getType().toString());
+                throw new ParserException("Error in parseStatement(Return)"
+                        + " : Unexpected Token: " + t.getType().toString());
             }
         }
         else{
-            throw new ParserException("Error in parseStatement(Return) : Unexpected Token: " + t.getType().toString());
+            throw new ParserException("Error in parseStatement(Return)"
+                    + " : Unexpected Token: " + t.getType().toString());
         }
         return this;
                      
@@ -68,7 +70,5 @@ public class ReturnStatement extends Statement{
         } catch (Exception ex) {
             System.err.println("error in ReturnStatement::genLLCode()");
         }
-        
     }
-    
 }

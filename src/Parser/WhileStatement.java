@@ -16,14 +16,16 @@ public class WhileStatement extends Statement {
     public Statement parseStatement(Token t) throws ParserException {
         t = compiler.Compiler.scanner.getNextToken();
         if(t.getType() != Token.TokenType.LPAREN_TOKEN){
-            throw new ParserException("Error in parseStatement(WHILE) : Unexpected Token: " + t.getType().toString());
+            throw new ParserException("Error in parseStatement(WHILE) :"
+                    + " Unexpected Token: " + t.getType().toString());
         }
         t = compiler.Compiler.scanner.getNextToken();
-        expr = new ArithmeticExpression();//the next line should change what type of expression it is if neccessary
+        expr = new ArithmeticExpression();
         expr = expr.getNextExpression(t);
         t = compiler.Compiler.scanner.getNextToken();
         if(t.getType() != Token.TokenType.RPAREN_TOKEN){
-            throw new ParserException("Error in parseStatement(WHILE) : Unexpected Token: " + t.getType().toString());
+            throw new ParserException("Error in parseStatement(WHILE) :"
+                    + " Unexpected Token: " + t.getType().toString());
         }
         t = compiler.Compiler.scanner.getNextToken();
         if(t.getType() == Token.TokenType.RETURN_TOKEN){
@@ -78,7 +80,7 @@ public class WhileStatement extends Statement {
             b.appendOper(branch);
             
             //4 Append Loop Block
-            f.appendBlock(loopBlock);
+            f.appendToCurrentBlock(loopBlock);
             
             //5 CurrentBlock is loop block
             f.setCurrBlock(loopBlock);
@@ -86,7 +88,10 @@ public class WhileStatement extends Statement {
             //6 Gencode Loop
             stmt.genLLCode(f);
             
-            //7 Make Branch
+            //7 Recompute Loop Condition
+            binExp = expr.genLLCode(f);
+            
+            //8 Make Branch
             branch = new Operation(Operation.OperationType.BNE, b);
             branch.setSrcOperand(0, binExp);
             src1 = new Operand(Operand.OperandType.INTEGER, 0);
@@ -94,10 +99,11 @@ public class WhileStatement extends Statement {
             src2 = new Operand(Operand.OperandType.BLOCK, 
                     loopBlock.getBlockNum());            
             branch.setSrcOperand(2, src2);
-            b.appendOper(branch);
+            //Loop back goes into loop block
+            loopBlock.appendOper(branch);
             
             //8 append post
-            f.appendBlock(postBlock);
+            f.appendToCurrentBlock(postBlock);
             
             //9 CurrentBlock = post
             f.setCurrBlock(postBlock);
@@ -105,5 +111,4 @@ public class WhileStatement extends Statement {
             System.err.println("Error in WhileStatement::genLLCode()");
         }        
     }
-    
 }

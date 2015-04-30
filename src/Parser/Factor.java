@@ -29,11 +29,14 @@ public class Factor extends Expression{
     public Expression parseExpression(Token t) throws ParserException {
         t = compiler.Compiler.scanner.getNextToken();
         if(t.getType() != Token.TokenType.LPAREN_TOKEN){
-            throw new ParserException("Error in parseExpression (Factor): unexpected token: "+ t.getType().toString());
+            throw new ParserException("Error in parseExpression (Factor):"
+                    + " unexpected token: "+ t.getType().toString());
         }
         isCall = true;
-        while(compiler.Compiler.scanner.viewNextToken().getType() != Token.TokenType.RPAREN_TOKEN){
-            if(compiler.Compiler.scanner.viewNextToken().getType() == Token.TokenType.COMMA_TOKEN){
+        while(compiler.Compiler.scanner.viewNextToken().getType() != 
+                Token.TokenType.RPAREN_TOKEN){
+            if(compiler.Compiler.scanner.viewNextToken().getType() == 
+                    Token.TokenType.COMMA_TOKEN){
                 compiler.Compiler.scanner.getNextToken();
             }
             t = compiler.Compiler.scanner.getNextToken();            
@@ -42,7 +45,8 @@ public class Factor extends Expression{
         }
         t = compiler.Compiler.scanner.getNextToken();
         if(t.getType() != Token.TokenType.RPAREN_TOKEN){
-            throw new ParserException("Error in parseExpression (Factor): unexpected token: "+ t.getType().toString());
+            throw new ParserException("Error in parseExpression (Factor):"
+                    + " unexpected token: "+ t.getType().toString());
         }
         
         return this;
@@ -77,18 +81,20 @@ public class Factor extends Expression{
                 Operand src = args.get(i).genLLCode(f);
                 op.setSrcOperand(0, src);
                 Attribute att = new Attribute("PARAM_NUM",
-                        Integer.toString(i + 1));
+                        Integer.toString(i));
                 op.addAttribute(att);
                 b.appendOper(op);
             }
             
-            toReturn = new Operand(Operand.OperandType.STRING, data);
+            Operand junk = new Operand(Operand.OperandType.STRING, data);
             Operation op = new Operation(Operation.OperationType.CALL, b);
-            op.setSrcOperand(0, toReturn);
+            op.setSrcOperand(0, junk);
             Attribute att1 = new Attribute("numParams",
                     Integer.toString(args.size()));
             op.addAttribute(att1);
             b.appendOper(op);
+            
+            toReturn = new Operand(Operand.OperandType.MACRO, "RetReg");
         }
         else if(data.matches("(0|1|2|3|4|5|6|7|8|9)+")){//NUM
             toReturn = new Operand(Operand.OperandType.INTEGER, 
@@ -100,10 +106,21 @@ public class Factor extends Expression{
                 f.getTable().get(data));
             }
             else{//global
-                toReturn = new Operand(Operand.OperandType.STRING, data);
+               //1 Load
+               Operation ld = new Operation(Operation.OperationType.LOAD_I, b);
+               Operand src1 = new Operand(Operand.OperandType.STRING, data);
+               //Not handling arrays
+               Operand src2 = new Operand(Operand.OperandType.INTEGER, 0);
+               Operand dest = new Operand(Operand.OperandType.REGISTER,
+                       f.getNewRegNum());
+               ld.setSrcOperand(0, src1);
+               ld.setSrcOperand(1, src2);
+               ld.setDestOperand(0, dest);
+               b.appendOper(ld);
+               
+               toReturn = dest;
             }
         }
         return toReturn;
-    }
-    
+    }    
 }

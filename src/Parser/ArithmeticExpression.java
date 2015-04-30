@@ -39,7 +39,9 @@ public class ArithmeticExpression extends Expression{
                 opType = "/";
                 break;
             default:
-                throw new ParserException("Error in parseExpression (ArithmeticExpression): unexpected token: "+ t.getType().toString());
+                throw new ParserException("Error in parseExpression "
+                        + "(ArithmeticExpression): unexpected token: "
+                        + t.getType().toString());
         }
         t = compiler.Compiler.scanner.getNextToken();
         rhs = (new ArithmeticExpression()).getNextExpression(t);

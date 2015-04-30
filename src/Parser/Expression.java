@@ -25,7 +25,9 @@ public abstract class Expression {
             exp = getNextExpression(compiler.Compiler.scanner.getNextToken());
             t = compiler.Compiler.scanner.getNextToken();
             if(t.getType() != Token.TokenType.RPAREN_TOKEN){
-                throw new ParserException("Error in in getNextExpression: unexpected token: " + t.getType().toString() + " " + t.getData().toString());
+                throw new ParserException("Error in in getNextExpression:"
+                        + " unexpected token: " + t.getType().toString() + " " 
+                        + t.getData().toString());
             }
             return parseSimpleExpression(t);
         }

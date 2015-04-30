@@ -30,7 +30,8 @@ public class CompoundStatement extends Statement {
             t = munched;
         }
         if(t.getType() != Token.TokenType.LBRACE_TOKEN){
-            throw new ParserException("Error in parseCompoundStatement: " + t.getType().toString());
+            throw new ParserException("Error in parseCompoundStatement: "
+                    + t.getType().toString());
         }
         t = compiler.Compiler.scanner.getNextToken();
         while(t.getType() == Token.TokenType.INT_TOKEN){

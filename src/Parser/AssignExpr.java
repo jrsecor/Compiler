@@ -21,7 +21,8 @@ public class AssignExpr extends Expression{
     public Expression parseExpression(Token t) throws ParserException {
         t = compiler.Compiler.scanner.getNextToken();
         if (t.getType() != Token.TokenType.ASSIGN_TOKEN){
-            throw new ParserException("Error in ParseExpression(AssignExpr): unexpected token: " + t.getType().toString());
+            throw new ParserException("Error in ParseExpression(AssignExpr):"
+                    + " unexpected token: " + t.getType().toString());
         }
         t = compiler.Compiler.scanner.getNextToken();
         rhs = (new ArithmeticExpression()).getNextExpression(t);
@@ -43,16 +44,35 @@ public class AssignExpr extends Expression{
     @Override
     public Operand genLLCode(Function f) throws CodeGenerationException {
         BasicBlock b = f.getCurrBlock();
-        Operand src = rhs.genLLCode(f);
-        Operand dest = lhs.genLLCode(f);
-        Operation op = new Operation(Operation.OperationType.ASSIGN, b);
         
-        op.setSrcOperand(0, src);
-        op.setDestOperand(0, dest);
+        Operation op;
+        Operand toReturn;
+        Operand src1 = rhs.genLLCode(f);
+        //Don't gencode the left-hand side
+//        Operand dest = lhs.genLLCode(f);
+        Operand dest;
+        String name = ((Factor)lhs).data;
+        if(f.getTable().containsKey(name)){//local variable
+            op = new Operation(Operation.OperationType.ASSIGN, b);
+            dest = new Operand(Operand.OperandType.REGISTER,
+                f.getTable().get(name));
+            toReturn = dest;
+            op.setSrcOperand(0, src1);
+            op.setDestOperand(0, dest);
+            
+        }
+        else{//global
+            op = new Operation(Operation.OperationType.STORE_I, b);
+            op.setSrcOperand(0, src1);
+            op.setSrcOperand(1, new Operand(Operand.OperandType.STRING, name));
+            //Arrays not supported
+            op.setSrcOperand(2, new Operand(Operand.OperandType.INTEGER, 0));
+            toReturn = op.getSrcOperand(1);//probably not used
+        }       
         
         //Set pointers
         b.appendOper(op);
-        return dest;
+        return toReturn;
     }
     
 }

@@ -21,17 +21,20 @@ public class VariableDeclaration extends Declaration{
     @Override
     public Declaration parseDeclaration(Token t) throws ParserException{
         id = t.getData().toString();
-        if(compiler.Compiler.scanner.getNextToken().getType() == Token.TokenType.LBRAK_TOKEN){
+        if(compiler.Compiler.scanner.getNextToken().getType() == 
+                                Token.TokenType.LBRAK_TOKEN){
             size = (Integer)compiler.Compiler.scanner.getNextToken().getData();
             //much the RBRACKET
             Token checker = compiler.Compiler.scanner.getNextToken();
             if(checker.getType() != Token.TokenType.RBRAK_TOKEN){
-                throw new ParserException("Error in parseVariableDeclaration: " + checker.getType().toString());
+                throw new ParserException("Error in parseVariableDeclaration: "
+                        + checker.getType().toString());
             }
             //munch the SEMI-COLON
             checker = compiler.Compiler.scanner.getNextToken();            
             if(checker.getType() != Token.TokenType.SEMI_TOKEN){
-                throw new ParserException("Error in parseVariableDeclaration: " + checker.getType().toString());
+                throw new ParserException("Error in parseVariableDeclaration: "
+                        + checker.getType().toString());
             }
         }        
         return this;
@@ -56,7 +59,8 @@ public class VariableDeclaration extends Declaration{
     @Override
     public CodeItem genLLCode(Function f){
         if(f == null){//global variable
-            compiler.Compiler.globalHash.put(id, compiler.Compiler.globalHash.size() + 1);
+            compiler.Compiler.globalHash.put(id,
+                    compiler.Compiler.globalHash.size() + 1);
             Data d = new Data(Data.TYPE_INT, id, size != 0, size);
             return d;
         }
@@ -66,5 +70,4 @@ public class VariableDeclaration extends Declaration{
             return d;
         }
     }
-    
 }

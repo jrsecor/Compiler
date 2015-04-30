@@ -44,7 +44,9 @@ public class BinaryExpr extends Expression{
                 opType = "!=";
                 break;
             default:
-                throw new ParserException("Error in parseExpression (BinaryExpr): unexpected token: "+ t.getType().toString());
+                throw new ParserException("Error in parseExpression"
+                        + " (BinaryExpr): unexpected token: "
+                        + t.getType().toString());
         }
         t = compiler.Compiler.scanner.getNextToken();
         rhs = (new ArithmeticExpression()).getNextExpression(t);

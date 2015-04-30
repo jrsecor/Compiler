@@ -24,14 +24,16 @@ public class ArrayExpression extends Expression{
     public Expression parseExpression(Token t) throws ParserException{
         t = compiler.Compiler.scanner.getNextToken();
         if (t.getType() != Token.TokenType.LBRAK_TOKEN){
-            throw new ParserException("Error in ParseExpression(array): unexpected token: " + t.getType().toString());
+            throw new ParserException("Error in ParseExpression(array):"
+                    + " unexpected token: " + t.getType().toString());
         }
         index = new ArithmeticExpression();//should be fixed by the next line
         t = compiler.Compiler.scanner.getNextToken();
         index = index.getNextExpression(t);
         t = compiler.Compiler.scanner.getNextToken();
         if (t.getType() != Token.TokenType.RBRAK_TOKEN){
-            throw new ParserException("Error in ParseExpression(array): unexpected token: " + t.getType().toString());
+            throw new ParserException("Error in ParseExpression(array):"
+                    + " unexpected token: " + t.getType().toString());
         }
         return this;
     }
